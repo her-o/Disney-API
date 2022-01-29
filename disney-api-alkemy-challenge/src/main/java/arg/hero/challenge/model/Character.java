@@ -1,13 +1,18 @@
 package arg.hero.challenge.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.springframework.lang.NonNull;
@@ -27,7 +32,11 @@ public class Character {
 	private int age;
 	private String weight;
 	private String background;
-	private Set<Movie> movies;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="characters_movies",
+			   joinColumns = {@JoinColumn(name="character_id")},
+			   inverseJoinColumns = {@JoinColumn(name="movie_id")})
+	private Set<Movie> movies = new HashSet<Movie>();
 	
 	public Character() {
 		// TODO Auto-generated constructor stub

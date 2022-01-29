@@ -1,16 +1,24 @@
 package arg.hero.challenge.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.lang.NonNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="movies")
@@ -26,6 +34,11 @@ public class Movie {
 	private Date createdOn;
 	@Enumerated
 	private Rating rating;
+	@JsonBackReference
+	@ManyToMany(mappedBy = "movies")
+	private Set<Character> characters = new HashSet<Character>();
+	@ManyToOne()
+	@JoinColumn(name="genre_id")
 	private Genre genre;
 	
 	public Movie() {
