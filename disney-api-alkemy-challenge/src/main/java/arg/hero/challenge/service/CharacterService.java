@@ -7,7 +7,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import arg.hero.challenge.repository.CharacterRepository;
 import arg.hero.challenge.dto.CharacterDto;
@@ -36,12 +38,15 @@ public class CharacterService  {
 		return repository.findAll()
 						 .stream()
 						 .map(character -> convertFromCharacterToDtoWithDetails(character))
-											.collect(Collectors.toList());
+						.collect(Collectors.toList());
 	}
 	
-	public CharacterDtoWithDetails findCharacterByName(String characterName) {
-		Character character = repository.findByName(characterName).get();
-		return convertFromCharacterToDtoWithDetails(character);
+	public List<CharacterDtoWithDetails> findCharacterByName(String characterName) {
+		List<Character> charactersList = repository.findByNameContaining(characterName);
+		return charactersList.stream()
+							 .map(character -> convertFromCharacterToDtoWithDetails(character))
+							 .collect(Collectors.toList());
+				
 	}
 	
 	public List<CharacterDtoWithDetails> findCharacterByAge(int characterAge) {
@@ -51,7 +56,7 @@ public class CharacterService  {
 														.collect(Collectors.toList());
 	}
 	
-	public List<CharacterDtoWithDetails> findCharacterByMovieId(int movieId) {
+	public List<CharacterDtoWithDetails> findCharacterByMovieId(Long movieId) {
 		List<Character> characters = repository.findAll();
 		List<CharacterDtoWithDetails> charactersOfTheMovie = new ArrayList<CharacterDtoWithDetails>();
 		for(Character c:characters) {
@@ -77,8 +82,10 @@ public class CharacterService  {
 	}
 
 
-	public void deleteCharacterByName(String name) {
-		repository.deleteByName(name);
+	public Character deleteCharacterByName(String name) {
+		Character character = repository.findByName(name).get();
+		repository.delete(character);
+		return character;
 	}
 	
 	private Character convertFromDtoToCharacter(CharacterDto characterDto) {
@@ -115,6 +122,33 @@ public class CharacterService  {
 			setOfMovies = movieService.generateSetOfMoviesFromString(movies);
 		}
 		return setOfMovies;
+	}
+
+
+	public List<CharacterDtoWithDetails> evaluateParamsAndReturnListOfCharacters(String name, String age,
+			String movieId) {
+		String[] params = {name, age, movieId};
+		int numberOfParams = 0;
+		
+		for(String p: params) {
+			if(p != null) {
+				numberOfParams++;
+			}
+		}
+		
+		if(numberOfParams > 1) {
+			throw  new ResponseStatusException(
+		            HttpStatus.BAD_REQUEST,"Too many params");
+		} else if(name != null) {
+			return findCharacterByName(name);
+		} else if(age != null) {
+			return findCharacterByAge(Integer.valueOf(age));
+		} else if(movieId != null ) {
+			return findCharacterByMovieId(Long.valueOf(movieId));
+		} else {
+			return findAllCharacters();
+		}
+		
 	}
 
 

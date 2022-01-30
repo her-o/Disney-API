@@ -50,10 +50,7 @@ public class MovieService {
 	}
 	
 	public List<MovieDtoWithDetails> findMovieByName(String name) {
-		List<Movie> listOfMovies = repository.findAll()
-												 .stream()
-												 .filter(movie -> movie.getName().contains(name))
-												 .toList();
+		List<Movie> listOfMovies = repository.findByNameContaining(name);
 		
 		return listOfMovies.stream()
 							.map(movie -> convertFromMovieToDtoWithDetails(movie))

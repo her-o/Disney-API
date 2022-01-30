@@ -35,7 +35,6 @@ public class Character {
 	private String weight;
 	@Lob
 	private String background;
-
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name="characters_movies",
 			   joinColumns = {@JoinColumn(name="character_id")},

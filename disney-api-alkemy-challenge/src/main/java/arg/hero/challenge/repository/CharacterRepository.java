@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface CharacterRepository extends JpaRepository<Character, Long> {
 
 	Optional<Character> findByName(String characterName);
+	List<Character> findByNameContaining(String name);
 	List<Character> findByAge(Integer characterAge);
 	boolean existsByName(String name);
 	void deleteByName(String name);

@@ -1,6 +1,7 @@
 package arg.hero.challenge.repository;
 
 import java.util.List;
+
 import java.util.Optional;
 
 
@@ -13,10 +14,9 @@ import arg.hero.challenge.model.Movie;
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 	
 	Optional<Movie> findByName(String name);
+	List<Movie> findByNameContaining(String name);
 	boolean existsByName(String name);
-	
 	List<Movie> findByGenreIdLike(Long genreId);
-	
 	List<Movie> findAllByOrderByNameAsc();
 	List<Movie> findAllByOrderByNameDesc();
 	Optional<Movie> deleteByName(String name);
