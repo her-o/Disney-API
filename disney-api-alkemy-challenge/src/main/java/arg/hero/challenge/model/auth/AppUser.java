@@ -18,23 +18,12 @@ public class AppUser {
 	private Long id;
 	@NonNull
 	@Column(unique = true)
-	private String username;
-	@NonNull
-	@Column(unique = true)
 	private String email;
 	@NonNull
 	private String password;
 	
 	public AppUser() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	public String getEmail() {

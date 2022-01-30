@@ -3,12 +3,18 @@ package arg.hero.challenge.dto;
 public class RegisterRequest {
 	
 	private String email;
-	private String username;
 	private String password;
 	
 	public RegisterRequest() {
 		// TODO Auto-generated constructor stub
 	}
+
+	public RegisterRequest(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
+
+
 
 	public String getEmail() {
 		return email;
@@ -16,14 +22,6 @@ public class RegisterRequest {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	public String getPassword() {

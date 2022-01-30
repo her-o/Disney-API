@@ -22,11 +22,11 @@ public class AppUserDetailsService implements UserDetailsService {
 	private AppUserRepository repository;
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		 AppUser appUser = repository.findByUsername(username).orElseThrow(() -> 
-		 									new UsernameNotFoundException(String.format("No user with username '%s' was found.", username)));
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		 AppUser appUser = repository.findByEmail(email).orElseThrow(() -> 
+		 									new UsernameNotFoundException(String.format("No user with email '%s' was found.", email)));
 		 
-		 User user = new User(appUser.getUsername(), 
+		 User user = new User(appUser.getEmail(), 
 				 			  appUser.getPassword(),
 				 	 	      true, true, true, true,
 				 			  getAuthorities("ROLE_USER"));

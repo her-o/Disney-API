@@ -1,22 +1,27 @@
 package arg.hero.challenge.model;
 
 import java.util.Date;
+
+
+
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -28,45 +33,50 @@ public class Movie {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@NonNull
-	private String title;
-	@Lob
-	private String image;
-	private Date createdOn;
+	@Column(unique = true)
+	private String name;
+	private String imageUrl;
+	@Nullable
+	private Date releaseDate;
 	@Enumerated
 	private Rating rating;
 	@JsonBackReference
-	@ManyToMany(mappedBy = "movies")
+	@ManyToMany(mappedBy = "movies", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Character> characters = new HashSet<Character>();
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="genre_id")
 	private Genre genre;
 	
 	public Movie() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public String getTitle() {
-		return title;
+	
+	public Long getId() {
+		return id;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	public String getImage() {
-		return image;
+	public String getImageUrl() {
+		return imageUrl;
 	}
 	
-	public void setImage(String image) {
-		this.image = image;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
-	public Date getCreatedOn() {
-		return createdOn;
+	public Date getReleaseDate() {
+		return releaseDate;
 	}
 
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
+	public void setReleaseDate(Date releaseDate) {
+		this.releaseDate = releaseDate;
 	}
 
 	public Rating getRating() {
@@ -84,5 +94,23 @@ public class Movie {
 	public void setGenre(Genre genre) {
 		this.genre = genre;
 	}
+	
+	public Set<Character> getCharacters() {
+		return characters;
+	}
+	
+	public void setCharacters(Set<Character> characters) {
+		this.characters = characters;
+	}
+
+	public String getGenreName() {
+		String genreName = "";
+		if(this.genre != null) {
+			genreName = this.genre.getName();
+		}
+		return genreName;
+	}
+	
+	
 	
 }
