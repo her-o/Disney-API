@@ -20,7 +20,7 @@ Herramientas utilizadas: Spring-boot, Spring Security, Spring JPA, Spring Hibern
 
 3. Una vez inicializado el programa evaluará si existe una base de datos con el nombre "disneky_api_alkemychallenge".
 
-4. En caso de querer utilizar la interfaz de Swagger para probar el API ingresar en "localhost:8081/swagger-ui/index.html". En caso de que el puerto esté ocupado, cambiarlo dentro de src>main>resources>application.properties>server.port.
+4. En caso de querer utilizar la interfaz de Swagger para probar el API ingresar en "localhost:8082/swagger-ui/index.html". En caso de que el puerto esté ocupado, cambiarlo dentro de src>main>resources>application.properties>server.port.
 
 -CREACIÓN DE USUARIO
 

@@ -27,7 +27,7 @@ public class Genre {
 	private String name;
 	private String imageUrl;
 	@JsonBackReference
-	@ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Set<Movie> movies = new HashSet<Movie>();
 	
 	

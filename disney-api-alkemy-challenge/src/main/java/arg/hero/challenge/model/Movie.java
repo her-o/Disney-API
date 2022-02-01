@@ -1,6 +1,7 @@
 package arg.hero.challenge.model;
 
 import java.util.Collection;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,9 +43,9 @@ public class Movie {
 	@Enumerated
 	private Rating rating;
 	@JsonBackReference
-	@ManyToMany(mappedBy = "movies", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "movies", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Set<Character> characters = new HashSet<Character>();
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinTable(name="movies_genres",
 			   joinColumns = {@JoinColumn(name="movie_id")},
 			   inverseJoinColumns = {@JoinColumn(name="genre_id")})

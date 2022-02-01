@@ -1,6 +1,7 @@
 package arg.hero.challenge.model.dto;
 
 import java.util.Date;
+
 import java.util.List;
 
 import arg.hero.challenge.model.Rating;

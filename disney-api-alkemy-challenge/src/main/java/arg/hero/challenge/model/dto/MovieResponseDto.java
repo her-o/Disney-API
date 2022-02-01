@@ -1,6 +1,7 @@
 package arg.hero.challenge.model.dto;
 
 import java.util.Date;
+
 import java.util.Set;
 
 import arg.hero.challenge.model.Genre;

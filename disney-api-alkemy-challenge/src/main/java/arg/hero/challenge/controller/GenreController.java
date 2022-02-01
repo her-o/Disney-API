@@ -43,7 +43,7 @@ public class GenreController {
 			+ "If and ID is passed to the request as a parameter it will return a List of genres containing only the"
 			+ "one with the specified ID")
 	public List<GenreResponseDto> findAllGenres(@ApiParam(value = "Indicate the ID of the genre you want to retrieve.") 
-												@RequestParam Long genreId) {
+												@RequestParam(required = false) Long genreId) {
 						
 		return service.evaluateParamsAndReturnListOfGenres(genreId);
 

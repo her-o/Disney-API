@@ -33,7 +33,7 @@ public class Character {
 	private int weight;
 	@Lob
 	private String background;
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinTable(name="characters_movies",
 			   joinColumns = {@JoinColumn(name="character_id")},
 			   inverseJoinColumns = {@JoinColumn(name="movie_id")})
