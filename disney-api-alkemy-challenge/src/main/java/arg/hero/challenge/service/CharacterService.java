@@ -1,9 +1,7 @@
 package arg.hero.challenge.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,120 +10,105 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import arg.hero.challenge.repository.CharacterRepository;
-import arg.hero.challenge.dto.CharacterDto;
-import arg.hero.challenge.dto.CharacterDtoWithDetails;
 import arg.hero.challenge.model.Character;
 import arg.hero.challenge.model.Movie;
+import arg.hero.challenge.model.dto.CharacterRequestDto;
+import arg.hero.challenge.model.dto.CharacterResponseDto;
 
 
 @Service
 public class CharacterService  {
 	
-	
 	@Autowired
 	private CharacterRepository repository;
-	@Autowired 
-	private MovieService movieService;
+	@Autowired
+	private SetService setService;
 
-	public CharacterDtoWithDetails addCharacter(CharacterDto characterDto) {
-		Character character = convertFromDtoToCharacter(characterDto);
-		repository.save(character);
-		return convertFromCharacterToDtoWithDetails(character);
+	public CharacterResponseDto addCharacter(CharacterRequestDto characterRequestDto) {
+		Character character = new Character();
+		repository.save(convertFromRequestDtoToCharacter(character, characterRequestDto));
+		return convertFromCharacterToResponseDto(character);
 	}
 
 
-	public List<CharacterDtoWithDetails> findAllCharacters() {
+	public List<CharacterResponseDto> findAllCharacters() {
 		return repository.findAll()
 						 .stream()
-						 .map(character -> convertFromCharacterToDtoWithDetails(character))
+						 .map(character -> convertFromCharacterToResponseDto(character))
 						.collect(Collectors.toList());
 	}
 	
-	public List<CharacterDtoWithDetails> findCharacterByName(String characterName) {
+	public List<CharacterResponseDto> findCharacterByName(String characterName) {
 		List<Character> charactersList = repository.findByNameContaining(characterName);
 		return charactersList.stream()
-							 .map(character -> convertFromCharacterToDtoWithDetails(character))
+							 .map(character -> convertFromCharacterToResponseDto(character))
 							 .collect(Collectors.toList());
 				
 	}
 	
-	public List<CharacterDtoWithDetails> findCharacterByAge(int characterAge) {
+	public List<CharacterResponseDto> findCharacterByAge(int characterAge) {
 		return repository.findByAge(characterAge)
 						 .stream()
-						 .map(character -> convertFromCharacterToDtoWithDetails(character))														  
+						 .map(character -> convertFromCharacterToResponseDto(character))														  
 														.collect(Collectors.toList());
 	}
 	
-	public List<CharacterDtoWithDetails> findCharacterByMovieId(Long movieId) {
+	public List<CharacterResponseDto> findCharacterByMovieId(Long movieId) {
 		List<Character> characters = repository.findAll();
-		List<CharacterDtoWithDetails> charactersOfTheMovie = new ArrayList<CharacterDtoWithDetails>();
+		List<CharacterResponseDto> charactersOfTheMovie = new ArrayList<CharacterResponseDto>();
 		for(Character c:characters) {
 			for(Movie m:c.getMovies()) {
 				if(m.getId() == movieId) {
-					charactersOfTheMovie.add(convertFromCharacterToDtoWithDetails(c));
+					charactersOfTheMovie.add(convertFromCharacterToResponseDto(c));
 				}
 			}
 		}
 		return charactersOfTheMovie;
 	}
 	
-	public CharacterDtoWithDetails updateCharacterByName(String characterName, CharacterDto characterDto) {
-		Character updatedCharacter = repository.findByName(characterName).get();
-		updatedCharacter.setName(characterDto.getName());
-		updatedCharacter.setImageUrl(characterDto.getImageUrl());
-		updatedCharacter.setAge(characterDto.getAge());
-		updatedCharacter.setWeight(characterDto.getWeight());
-		updatedCharacter.setBackground(characterDto.getBackground());
-		updatedCharacter.setMovies(findMovieNamesOrCreateIfNonExistant(characterDto.getMovies()));
+	public CharacterResponseDto updateCharacterById(Long characterId, CharacterRequestDto characterRequestDto) {
+		Character character  = repository.findById(characterId).get();
+		Character updatedCharacter = convertFromRequestDtoToCharacter(character, characterRequestDto);
 		repository.save(updatedCharacter);
-		return convertFromCharacterToDtoWithDetails(updatedCharacter);
+		return convertFromCharacterToResponseDto(updatedCharacter);
 	}
 
 
-	public Character deleteCharacterByName(String name) {
-		Character character = repository.findByName(name).get();
+	public Character deleteCharacterById(Long characterId) {
+		Character character = repository.findById(characterId).get();
 		repository.delete(character);
 		return character;
 	}
 	
-	private Character convertFromDtoToCharacter(CharacterDto characterDto) {
-		Character character = new Character();
-		character.setName(characterDto.getName());
-		character.setImageUrl(characterDto.getImageUrl());
-		character.setAge(characterDto.getAge());
-		character.setWeight(characterDto.getWeight());
-		character.setBackground(characterDto.getBackground());
-		character.setMovies(findMovieNamesOrCreateIfNonExistant(characterDto.getMovies()));
-	
+	private Character convertFromRequestDtoToCharacter(Character character, CharacterRequestDto characterRequestDto) {
+		character.setName(characterRequestDto.getName());
+		character.setImageUrl(characterRequestDto.getImageUrl());
+		character.setAge(characterRequestDto.getAge());
+		character.setWeight(characterRequestDto.getWeight());
+		character.setBackground(characterRequestDto.getBackground());
+		if(characterRequestDto.getMovies() != null) {
+			character.setMovies(setService.createMovieSet(characterRequestDto.getMovies()));
+		}
 		return character;
 	}
 	
-	private CharacterDtoWithDetails convertFromCharacterToDtoWithDetails(Character character) {
-		CharacterDtoWithDetails dtoWithDetails = new CharacterDtoWithDetails();
-		dtoWithDetails.setName(character.getName());
-		dtoWithDetails.setImageUrl(character.getImageUrl());
-		dtoWithDetails.buildDetails(character.getAge(), 
-									character.getWeight(), 
-									character.getBackground(), 
-									character.getMovies());
+	
+	private CharacterResponseDto convertFromCharacterToResponseDto(Character character) {
+		CharacterResponseDto characterResponseDto = new CharacterResponseDto();
 		
-		return dtoWithDetails;
-	}
-
-	public Set<Movie> findMovieNamesOrCreateIfNonExistant(String[] movies) {
+		characterResponseDto.setId(character.getId());
+		characterResponseDto.setName(character.getName());
+		characterResponseDto.setImageUrl(character.getImageUrl());
+		characterResponseDto.setCharacterDetails(characterResponseDto.buildDetails(character.getAge(), 
+																				   character.getWeight(), 
+																                   character.getBackground(), 
+																                   character.getMovies())); 
 		
-		Set<Movie> setOfMovies;
-		
- 		if(movies == null) {
-			setOfMovies = new HashSet<Movie>();
-		} else {
-			setOfMovies = movieService.generateSetOfMoviesFromString(movies);
-		}
-		return setOfMovies;
+		return characterResponseDto;
 	}
 
 
-	public List<CharacterDtoWithDetails> evaluateParamsAndReturnListOfCharacters(String name, String age,
+	public List<CharacterResponseDto> evaluateParamsAndReturnListOfCharacters(String name, String age,
 			String movieId) {
 		String[] params = {name, age, movieId};
 		int numberOfParams = 0;
@@ -150,6 +133,4 @@ public class CharacterService  {
 		}
 		
 	}
-
-
 }

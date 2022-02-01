@@ -16,8 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import arg.hero.challenge.jwt.JwtAuthenticationFilter;
-import arg.hero.challenge.jwt.JwtEntryPoint;
+import arg.hero.challenge.auth.jwt.JwtAuthenticationFilter;
+import arg.hero.challenge.auth.jwt.JwtEntryPoint;
 import arg.hero.challenge.service.AppUserDetailsService;
 
 @Configuration

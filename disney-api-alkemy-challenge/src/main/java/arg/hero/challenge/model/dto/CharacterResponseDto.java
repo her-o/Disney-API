@@ -1,23 +1,35 @@
-package arg.hero.challenge.dto;
+package arg.hero.challenge.model.dto;
 
 import java.util.Set;
 
+
 import arg.hero.challenge.model.Movie;
 
-public class CharacterDtoWithDetails {
+public class CharacterResponseDto {
 	
+	private Long id;
 	private String name;
 	private String imageUrl;
 	private CharacterDetails characterDetails;
 	
-	public CharacterDtoWithDetails() {
+	public CharacterResponseDto() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public CharacterDtoWithDetails(String name, String imageUrl, CharacterDetails characterDetails) {
+	
+	public CharacterResponseDto(Long id, String name, String imageUrl, CharacterDetails characterDetails) {
+		super();
+		this.id = id;
 		this.name = name;
 		this.imageUrl = imageUrl;
 		this.characterDetails = characterDetails;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -43,16 +55,16 @@ public class CharacterDtoWithDetails {
 	public void setCharacterDetails(CharacterDetails characterDetails) {
 		this.characterDetails = characterDetails;
 	}
-	
-	public void buildDetails(int age, String weight, String background, Set<Movie> movies) {
-		this.characterDetails = new CharacterDetails(age, weight, background, movies);
+
+	public CharacterDetails buildDetails(int age, int weight, String background, Set<Movie> movies) {
+		return this.characterDetails = new CharacterDetails(age, weight, background, movies);
 	}
-	
 }
 
 class CharacterDetails {
+	
 	private int age;
-	private String weight;
+	private int weight;
 	private String background;
 	private Set<Movie> movies;
 	
@@ -60,8 +72,7 @@ class CharacterDetails {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CharacterDetails(int age, String weight, String background, Set<Movie> movies) {
-		super();
+	public CharacterDetails(int age, int weight, String background, Set<Movie> movies) {
 		this.age = age;
 		this.weight = weight;
 		this.background = background;
@@ -76,11 +87,11 @@ class CharacterDetails {
 		this.age = age;
 	}
 
-	public String getWeight() {
+	public int getWeight() {
 		return weight;
 	}
 
-	public void setWeight(String weight) {
+	public void setWeight(int weight) {
 		this.weight = weight;
 	}
 
@@ -99,5 +110,7 @@ class CharacterDetails {
 	public void setMovies(Set<Movie> movies) {
 		this.movies = movies;
 	}
-	
+
 }
+
+

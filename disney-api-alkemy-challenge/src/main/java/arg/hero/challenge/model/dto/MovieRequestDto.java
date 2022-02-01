@@ -1,30 +1,31 @@
-package arg.hero.challenge.dto;
+package arg.hero.challenge.model.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import arg.hero.challenge.model.Rating;
 
-public class MovieDto {
+public class MovieRequestDto {
 	
 	private String name;
 	private String imageUrl;
 	private Date releaseDate;
 	private Rating rating;
-	private String[] characters;
-	private String genre;
+	private List<String> characters;
+	private List<String> genres;
 	
-	public MovieDto() {
+	public MovieRequestDto() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public MovieDto(String name, String imageUrl, Date releaseDate, Rating rating, String[] characters,
-			String genre) {
+	public MovieRequestDto(String name, String imageUrl, Date releaseDate, 
+							Rating rating, List<String> characters,  List<String> genres) {
 		this.name = name;
 		this.imageUrl = imageUrl;
 		this.releaseDate = releaseDate;
 		this.rating = rating;
 		this.characters = characters;
-		this.genre = genre;
+		this.genres = genres;
 	}
 
 	public String getName() {
@@ -59,20 +60,20 @@ public class MovieDto {
 		this.rating = rating;
 	}
 
-	public String[] getCharacters() {
+	public List<String> getCharacters() {
 		return characters;
 	}
 
-	public void setCharacters(String[] characters) {
+	public void setCharacters(List<String> characters) {
 		this.characters = characters;
 	}
 
-	public String getGenre() {
-		return genre;
+	public  List<String> getGenres() {
+		return genres;
 	}
 
-	public void setGenre(String genre) {
-		this.genre = genre;
+	public void setGenres(List<String> genres) {
+		this.genres = genres;
 	}
 
 }

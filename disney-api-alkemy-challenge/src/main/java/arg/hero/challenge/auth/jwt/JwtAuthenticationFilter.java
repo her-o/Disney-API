@@ -1,4 +1,4 @@
-package arg.hero.challenge.jwt;
+package arg.hero.challenge.auth.jwt;
 
 import java.io.IOException;
 

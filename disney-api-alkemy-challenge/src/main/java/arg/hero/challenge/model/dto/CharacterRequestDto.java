@@ -1,22 +1,20 @@
-package arg.hero.challenge.dto;
+package arg.hero.challenge.model.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
-public class CharacterDto {
+public class CharacterRequestDto {
 	
 	private String name;
 	private String imageUrl;
 	private int age;
-	private String weight;
+	private int weight;
 	private String background;
 	private String[] movies;
 	
-	public CharacterDto() {
+	public CharacterRequestDto() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CharacterDto(String name, String imageUrl, int age, String weight, String background,
-			String[] movies) {
+	public CharacterRequestDto(String name, String imageUrl, int age, int weight, String background, String[] movies) {
+		super();
 		this.name = name;
 		this.imageUrl = imageUrl;
 		this.age = age;
@@ -49,11 +47,11 @@ public class CharacterDto {
 		this.age = age;
 	}
 
-	public String getWeight() {
+	public int getWeight() {
 		return weight;
 	}
 
-	public void setWeight(String weight) {
+	public void setWeight(int weight) {
 		this.weight = weight;
 	}
 

@@ -1,4 +1,4 @@
-package arg.hero.challenge.model.auth;
+package arg.hero.challenge.auth;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

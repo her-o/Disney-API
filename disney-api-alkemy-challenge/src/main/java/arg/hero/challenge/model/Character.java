@@ -1,8 +1,6 @@
 package arg.hero.challenge.model;
 
 import java.util.HashSet;
-
-
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -32,7 +30,7 @@ public class Character {
 	private String name;
 	private String imageUrl;
 	private int age;
-	private String weight;
+	private int weight;
 	@Lob
 	private String background;
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -44,6 +42,16 @@ public class Character {
 	
 	public Character() {
 	
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 
@@ -77,12 +85,12 @@ public class Character {
 	}
 
 
-	public String getWeight() {
+	public int getWeight() {
 		return weight;
 	}
 
 
-	public void setWeight(String weight) {
+	public void setWeight(int weight) {
 		this.weight = weight;
 	}
 
@@ -105,7 +113,5 @@ public class Character {
 	public void setMovies(Set<Movie> movies) {
 		this.movies = movies;
 	}
-
 	
-
 }

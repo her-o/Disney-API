@@ -1,4 +1,4 @@
-package arg.hero.challenge.jwt;
+package arg.hero.challenge.auth.jwt;
 
 import java.io.IOException;
 
@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
 
 @Configuration
 public class JwtEntryPoint implements AuthenticationEntryPoint {

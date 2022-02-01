@@ -1,6 +1,14 @@
 package arg.hero.challenge.service;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,11 +17,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import arg.hero.challenge.dto.JwtDto;
-import arg.hero.challenge.dto.LoginRequest;
-import arg.hero.challenge.dto.RegisterRequest;
-import arg.hero.challenge.jwt.JWTProvider;
-import arg.hero.challenge.model.auth.AppUser;
+import arg.hero.challenge.auth.AppUser;
+import arg.hero.challenge.auth.dto.JwtDto;
+import arg.hero.challenge.auth.dto.LoginRequest;
+import arg.hero.challenge.auth.dto.RegisterRequest;
+import arg.hero.challenge.auth.jwt.JWTProvider;
 import arg.hero.challenge.repository.AppUserRepository;
 
 @Service
@@ -29,12 +37,17 @@ public class AuthService {
 	private JWTProvider jwtProvider;
 
 	public void signUp(RegisterRequest registerRequest) {
-		System.out.println(registerRequest.getPassword());
-		AppUser appUser = buildAppUserFromRegisterRequest(registerRequest);
-		System.out.println(appUser.getPassword());
-		this.repository.save(appUser);
+			AppUser appUser = buildAppUserFromRegisterRequest(registerRequest);
+			this.repository.save(appUser);
+			try {
+				sendEmail(appUser);
+			} catch (UnsupportedEncodingException | MessagingException e) {
+				e.printStackTrace();
+			}
 	}
 	
+	
+
 	public JwtDto signIn(LoginRequest loginRequest) {
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), 
 																				   loginRequest.getPassword()));
@@ -63,5 +76,33 @@ public class AuthService {
 
 	public boolean emailAlreadyExists(String email) {
 		return repository.existsByEmail(email);
+	}
+	
+	private void sendEmail(AppUser appUser) throws MessagingException, UnsupportedEncodingException {
+		
+		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		
+		mailSender.setHost("smtp.gmail.com");
+		mailSender.setPort(587);
+		mailSender.setUsername("hernan.olmos11@gmail.com");
+		mailSender.setPassword("wuoxxpwfgusgului");
+		
+		Properties mailProperties = new Properties();
+		mailProperties.setProperty("mail.smtp.auth", "true");
+		mailProperties.setProperty("mail.smtp.starttls.enable", "true");
+		
+		mailSender.setJavaMailProperties(mailProperties);
+		
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message);
+		
+		helper.setFrom("hernan.olmos11@gmail.com", "Disney API - Alkemy Challenge");
+		helper.setTo(appUser.getEmail());
+		helper.setSubject("Registration Successful");
+		
+		String content = "Thanks for signing up for this API. You can now start using it!.";
+		helper.setText(content, true);
+		
+		mailSender.send(message);
 	}
 }

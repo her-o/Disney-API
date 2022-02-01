@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import arg.hero.challenge.model.auth.AppUser;
+import arg.hero.challenge.auth.AppUser;
 import arg.hero.challenge.repository.AppUserRepository;
 
 @Service

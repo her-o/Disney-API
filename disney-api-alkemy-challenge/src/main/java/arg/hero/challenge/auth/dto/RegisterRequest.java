@@ -1,19 +1,20 @@
-package arg.hero.challenge.dto;
+package arg.hero.challenge.auth.dto;
 
-public class LoginRequest {
+public class RegisterRequest {
 	
 	private String email;
 	private String password;
 	
-	public LoginRequest() {
+	public RegisterRequest() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	public LoginRequest(String email, String password) {
+
+	public RegisterRequest(String email, String password) {
 		this.email = email;
 		this.password = password;
 	}
+
+
 
 	public String getEmail() {
 		return email;
@@ -32,4 +33,5 @@ public class LoginRequest {
 	}
 	
 	
+
 }

@@ -1,4 +1,4 @@
-package arg.hero.challenge.swagger;
+package arg.hero.challenge.config;
 
 import java.util.Arrays;
 
@@ -17,7 +17,6 @@ import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.SecurityReference;
-import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -60,7 +59,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 	private ApiInfo apiInfo() {
 		return new ApiInfo(
 				"Alkemy Challenge - Disney API",
-				"Description: Creation of a simple Disney API using Spring-boot and Spring-security",
+				"Description: Simple Disney API created using Spring-boot, Spring Security, JWT and Swagger",
 				"1.0",
 				"",
 				new Contact("Hernán Olmos", "https://github.com/her-o", "hernan.olmos11@gmail.com"),

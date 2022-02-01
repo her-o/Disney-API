@@ -1,4 +1,4 @@
-package arg.hero.challenge.dto;
+package arg.hero.challenge.auth.dto;
 
 import java.util.Collection;
 
