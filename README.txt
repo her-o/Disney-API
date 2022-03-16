@@ -1,0 +1,104 @@
+#Alkemy Challenge - Crear un API de los personajes de Disney.
+
+Nombre: Hernán Olmos
+Lenguaje: Java
+
+Herramientas utilizadas: Spring-boot, Spring Security, Spring JPA, Spring Hibernate, Spring mail, MySql, Swagger
+
+#Como usar la Aplicación:
+
+-EJECUCIÓN DE LA APLICACIÓN
+
+1. Clonar el repositorio en una carpeta.
+
+2.  
+  a. Abrirlo con un IDE y ejecutarlo como una aplicación Spring. 
+  b. Abrir el directorio del proyecto desde el cmd e ingresar "mvnw spring-boot:run"
+
+
+*El programa utiliza un gestor de base de datos sql, por lo que será necesario conectarlo o cambiar la fuente de base de datos dentro src>main>resources>application.properties.
+
+3. Una vez inicializado el programa evaluará si existe una base de datos con el nombre "disneky_api_alkemychallenge".
+
+4. En caso de querer utilizar la interfaz de Swagger para probar el API ingresar en "localhost:8082/swagger-ui/index.html". En caso de que el puerto esté ocupado, cambiarlo dentro de src>main>resources>application.properties>server.port.
+
+-CREACIÓN DE USUARIO
+
+Para acceder a los endpoints de la aplicación es necesario autenticarse.
+Para esto se debe:
+
+1. Ingresar dentro de AUTHENTICATION.
+2. Ingresar dentro del método POST register y clickear en Try it out.
+3. Ingresar un email personal y una constraseña.
+	-En caso de que la data ingresada sea valida se creara un nuevo usuario en la base de datos con los datos ingresados (el password estará encriptado por un password encoder). 
+Luego recibirá un email de bienvenida a la casilla del correo ingresado, enviado desde Gmail utilizando la librería Spring Mail.
+4. Dirigirseal método POST login y volver a ingresar los datos previamente entregados al servidor.
+5. Si el usuario está registrado en la base de datos recibirá un token JWT dentro de la respuesta de método.
+6. Copiar el token sin las comillas y dentro de la casilla "Authorize" arriba a la derecha, ingresar el texto "Bearer" seguido de un espacio y el token.
+
+La seguridad del servidor (Spring Security) evaluará este token cada vez que se haga un pedido a la base de datos para confirmar la identidad del usuario. 
+En caso de ingresar un token incorrecto los métodos deberán devolver un error 401 (usuario no autorizado).
+
+-USO DEL API
+Dentro del API encontrará tres controladores, cada uno con cuatro métodos que se corresponden con las operaciones CRUD (create, read, update and delete).
+
+1. Character Controller
+Este controlador está encargado de gestionar los datos que tengan que ver con los personajes.
+
+Método POST: Ingresar los datos que serán guardados en un DTO(Data Transfer Object) para luego convertirlos en un objeto de tipo "Character" y guardarlo en la base de datos. 
+--Campo "name": Obligatorio. En este campo se ingresa el nombre de personaje. Dicho campo está configurado como una columna única dentro del diseño de la base de datos. Eso quiere decir que no podrán guardarse dos personajes con el mismo nombre.
+--Campo "movies": Opcional. En el caso de este campo registrará la base de datos para evaluar si las películas ingresadas existen, en caso contrario creará las respectivas instancias en la base de datos, las cuales tendrán todos sus campos nulos, salvo el nombre.
+--Campo "imageUrl": Opcional. URL de la imagen del personaje que será consumida luego por el cliente.
+--Campo "background" :Opcional. Texto sobre la historia del personaje.
+--Campo "age": Opcional. Edad del personaje.
+--Campo "weight": Opcional. Peso del personaje.
+
+Método GET: Se devuelve un JSON con los datos de los personajes guardados en la base de datos.
+A este método se pueden pasar parametros para filtrar tales busquedas por nombre, edad o películas en las que aparecen. No es posible ingresar mas de un críterio de busqueda a la vez.  En caso de no especificarse ninguno se devolverán todos los personajes que se encuentren en la base de datos.
+
+Para devolver los resultados utilizo otro DTO que separa el nombre y la imagen del personaje de sus detalles (edad, peso, historia y películas).
+
+Método PUT: Se actualiza un personaje en partícular con información nueva. Este método es muy similar al POST. Todos los campos son opcionales salvo el nombre del personaje modificado y el ID del personaje que se quiera modificar. 
+Atención: En caso de no completar ciertos campos se actualizarán como nulos, pudiendo perder así información sobre el personaje.
+
+Método DELETE: Borra un personaje de la base de datos en base a su ID.
+
+2. Movie Controller
+Este controlador está encargado de gestionar los datos que tengan que ver con las películas.
+
+Método POST: Ingresar los datos que serán guardados en un DTO(Data Transfer Object) para luego convertirlos en un objeto de tipo "Movie" y guardarlo en la base de datos. 
+--Campo "name": Obligatorio. En este campo se ingresa el nombre de la película. Dicho campo está configurado como una columna única dentro del diseño de la base de datos. Eso quiere decir que no podrán guardarse dos películas con el mismo nombre.
+--Campo "characters": Opcional. En el caso de este campo registrará la base de datos para evaluar si los personajes ingresados existen, en caso contrario creará las respectivas instancias en la base de datos, las cuales tendrán todos sus campos nulos, salvo el nombre.
+--Campo "genres": Opcional. En el caso de este campo registrará la base de datos para evaluar si los géneros ingresados existen, en caso contrario creará las respectivas instancias en la base de datos, las cuales tendrán todos sus campos nulos, salvo el nombre.
+--Campo "imageUrl": Opcional. URL de la imagen de la película que será consumida luego por el cliente.
+--Campo "rating" :Opcional. Evaluación de la película en base a un críterio de 5 opciones.
+--Campo "release date": Opcional. Fecha de estreno de la película.
+
+Método GET: Se devuelve un JSON con los datos de las películas guardadas en la base de datos.
+A este método se pueden pasar parametros para filtrar tales busquedas por nombre, género o alterar el orden en el que aparecen en la lista. No es posible ingresar mas de un críterio de busqueda a la vez.  En caso de no especificarse ninguno se devolverán todos las películas que se encuentren en la base de datos.
+
+Para devolver los resultados utilizo otro DTO que separa el nombre y la imagen del personaje de sus detalles (edad, peso, historia y películas).
+
+Método PUT: Se actualiza una película en partícular con información nueva. Este método es muy similar al POST. Todos los campos son opcionales salvo el nombre de la película modificada y el ID de la película que se quiera modificar. 
+Atención: En caso de no completar ciertos campos se actualizarán como nulos, pudiendo perder así información sobre la película.
+
+Método DELETE: Borra una película de la base de datos en base a su ID.
+
+3. Genre Controller
+Este controlador está encargado de gestionar los datos que tengan que ver con los géneros.
+
+Método POST: Ingresar los datos que serán guardados en un DTO(Data Transfer Object) para luego convertirlos en un objeto de tipo "Genre" y guardarlo en la base de datos. 
+--Campo "name": Obligatorio. En este campo se ingresa el nombre del género. Dicho campo está configurado como una columna única dentro del diseño de la base de datos. Eso quiere decir que no podrán guardarse dos géneros con el mismo nombre.
+n la base de datos, las cuales tendrán todos sus campos nulos, salvo el nombre.
+--Campo "imageUrl": Opcional. URL de la imagen representativa del género que será consumida luego por el cliente.
+
+
+Método GET: Se devuelve un JSON con los datos de los géneros guardados en la base de datos.
+A este método se pueden pasar parametros para filtrar tales busquedas según el ID del género. En caso de no pasarse ningún parametro, se devolverá una lista con todos los géneros.
+
+Para devolver los resultados utilizo otro DTO que devuelve el nombre, la imagen y las películas de la base de datos que pertenezcan a dicho genero.
+
+Método PUT: Se actualiza un género en partícular con información nueva. Este método es muy similar al POST. Todos los campos son opcionales salvo el nombre del género modificado y el ID del género que se quiera modificar. 
+Atención: En caso de no completar ciertos campos se actualizarán como nulos, pudiendo perder así información sobre el género.
+
+Método DELETE: Borra un género de la base de datos en base a su ID.
