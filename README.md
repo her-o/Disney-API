@@ -106,7 +106,7 @@ A este método se pueden pasar parametros para filtrar tales busquedas por nombr
 ##### 2. Movie Controller
 _Este controlador está encargado de gestionar los datos que tengan que ver con las películas._
 
-**Método POST** 
+- **Método POST** 
 Ingresar los datos que serán guardados en un DTO (Data Transfer Object) para luego convertirlos en un objeto de tipo "Movie" y guardarlo en la base de datos.
     
     _name_: Obligatorio.
@@ -128,24 +128,24 @@ Ingresar los datos que serán guardados en un DTO (Data Transfer Object) para lu
     __release date__: Opcional. 
     Fecha de estreno de la película.
 
-**Método GET** 
+- **Método GET** 
 Se devuelve un JSON con los datos de las películas guardadas en la base de datos.
 A este método se pueden pasar parametros para filtrar tales busquedas por nombre, género o alterar el orden en el que aparecen en la lista. 
 **No es posible ingresar mas de un críterio de busqueda a la vez.**  En caso de no especificarse ninguno se devolverán todos las películas que se encuentren en la base de datos.
 
 Para devolver los resultados utilizo otro DTO que separa el nombre y la imagen del personaje de sus detalles (edad, peso, historia y películas).
 
-**Método PUT** 
+- **Método PUT** 
 Se actualiza una película en partícular con información nueva. Este método es muy similar al POST. 
 Todos los campos son opcionales salvo el nombre de la película modificada y el ID de la película que se quiera modificar. 
 **Atención:** _En caso de no completar ciertos campos se actualizarán como nulos, pudiendo perder así información sobre la película._
 
-**Método DELETE:** Borra una película de la base de datos en base a su ID.
+- **Método DELETE:** Borra una película de la base de datos en base a su ID.
 
 ##### 3. Genre Controller
 Este controlador está encargado de gestionar los datos que tengan que ver con los géneros.
 
-**Método POST** 
+- **Método POST** 
 Ingresar los datos que serán guardados en un DTO (Data Transfer Object) para luego convertirlos en un objeto de tipo "Genre" y guardarlo en la base de datos. 
 
 _name_: Obligatorio. 
@@ -157,18 +157,18 @@ _imageUrl_: Opcional.
 URL de la imagen representativa del género que será consumida luego por el cliente.
 
 
-**Método GET** 
+- **Método GET** 
 Se devuelve un JSON con los datos de los géneros guardados en la base de datos.
 A este método se pueden pasar parametros para filtrar tales busquedas según el ID del género. En caso de no pasarse ningún parametro, se devolverá una lista con todos los géneros.
 
 Para devolver los resultados utilizo otro DTO que devuelve el nombre, la imagen y las películas de la base de datos que pertenezcan a dicho genero.
 
-**Método PUT** 
+- **Método PUT** 
 Se actualiza un género en partícular con información nueva. 
 Este método es muy similar al POST. Todos los campos son opcionales salvo el nombre del género modificado y el ID del género que se quiera modificar. 
 **Atención:** _En caso de no completar ciertos campos se actualizarán como nulos, pudiendo perder así información sobre el género._
 
-**Método DELETE** 
+- **Método DELETE** 
 Borra un género de la base de datos en base a su ID.
 
 
